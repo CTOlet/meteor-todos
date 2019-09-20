@@ -1,0 +1,10 @@
+{
+  "extends": ["plugin:meteor/recommended", "prettier"],
+  "plugins": ["prettier", "meteor"],
+  "rules": {
+    "prettier/prettier": ["error"]
+  },
+  "parserOptions": {
+    "ecmaVersion": 8
+  }
+}

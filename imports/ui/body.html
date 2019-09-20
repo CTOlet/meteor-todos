@@ -1,44 +1,36 @@
 <body>
-<div class="todo-container">
+  <div class="todo-container">
     <header>
-        <div class="row">
-            <div class="col-xs-10">
-                <h1>Todo List ({{incompleteCount}})</h1>
-            </div>
-            <div class="col-xs-2">
-                <button id="addTaskButton" class="btn btn-primary">Add</button>
-            </div>
+      <div class="row">
+        <div class="col-xs-10">
+          <h1>Todo List ({{incompleteCount}})</h1>
         </div>
+        <div class="col-xs-2">
+          <button id="addTaskButton" class="btn btn-primary">Add</button>
+        </div>
+      </div>
     </header>
 
-    <label class="hide-completed">
-        <input type="checkbox"/> Hide Completed Tasks
-    </label>
+    <label class="hide-completed"> <input type="checkbox" /> Hide Completed Tasks </label>
 
     <div class="modal fade" id="tasksFormModal">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Add new task</h4>
-                </div>
-                <div class="modal-body">
-                    {{> quickForm
-                        collection="Tasks"
-                        id="insertTaskForm"
-                        type="insert"
-                        fields="title,description"
-                    }}
-                </div>
-            </div>
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add new task</h4>
+          </div>
+          <div class="modal-body">
+            {{> quickForm collection="Tasks" id="insertTaskForm" type="insert"
+            fields="title,description" }}
+          </div>
         </div>
+      </div>
     </div>
 
     <ul class="list-group">
-        {{#each tasks}}
-            {{> task}}
-        {{else}}
-            <h4>You haven't added any item, click the Add button!</h4>
-        {{/each}}
+      {{#each tasks}} {{> task}} {{else}}
+      <h4>You haven't added any item, click the Add button!</h4>
+      {{/each}}
     </ul>
-</div>
+  </div>
 </body>
