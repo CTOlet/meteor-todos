@@ -2,15 +2,31 @@ import {Mongo} from 'meteor/mongo';
 import {check} from 'meteor/check';
 import SimpleSchema from 'simpl-schema';
 
+SimpleSchema.extendOptions(['autoform']);
+
 export const Tasks = new Mongo.Collection('tasks');
 
 Tasks.attachSchema(new SimpleSchema({
   title: {
     type: String,
-    max: 255
+    required: true,
+    max: 250,
+  },
+  description: {
+    type: String,
+    optional: true,
+    max: 2000,
+    autoform: {
+      rows: 5
+    }
   },
   checked: {
     type: Boolean,
+    autoValue: function () {
+      if (this.isInsert) {
+        return false;
+      }
+    },
   },
   createdAt: {
     type: Date,
@@ -23,17 +39,14 @@ Tasks.attachSchema(new SimpleSchema({
         this.unset();  // Prevent user from supplying their own value
       }
     },
-    denyUpdate: true
+    denyUpdate: true,
   },
   updatedAt: {
     type: Date,
     autoValue: function () {
-      if (this.isUpdate) {
-        return new Date();
-      }
+      return new Date();
     },
-    denyInsert: true,
-    optional: true
+    optional: true,
   },
 }));
 
@@ -45,21 +58,20 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'tasks.insert'(title) {
-    Tasks.insert({title});
+  'tasks.insert'(newTask) {
+    Tasks.insert(newTask);
   },
   'tasks.remove'(taskId) {
     check(taskId, String);
 
     Tasks.remove(taskId);
   },
-  'tasks.setChecked'(taskId, setChecked) {
+  'tasks.toggleChecked'(taskId, checked) {
     check(taskId, String);
-    check(setChecked, Boolean);
 
     Tasks.update(taskId, {
       $set: {
-        checked: setChecked,
+        checked,
         updatedAt: new Date()
       }
     });
