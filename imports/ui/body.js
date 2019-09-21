@@ -6,18 +6,11 @@ import './body.html';
 window.Tasks = Tasks;
 
 Template.body.onCreated(function bodyOnCreated() {
-  this.state = new ReactiveDict();
   Meteor.subscribe('tasks');
 });
 
 Template.body.helpers({
   tasks() {
-    const instance = Template.instance();
-    if (instance.state.get('hideCompleted')) {
-      // If hide completed is checked, filter tasks
-      return Tasks.find({ checked: { $ne: true } }, { sort: { createdAt: -1 } });
-    }
-    // Otherwise, return all of the tasks
     return Tasks.find({}, { sort: { createdAt: -1 } });
   },
   incompleteCount() {
@@ -44,23 +37,36 @@ Template.body.helpers({
   }
 });
 
+Tracker.autorun(() => {
+  if (Session.get('showTasksForm')) {
+    const timerId = setInterval(() => {
+      // hack: wait while document is not ready
+      if (document.readyState !== 'complete') return;
+      clearInterval(timerId);
+
+      // show modal
+      AutoForm.resetForm('taskForm');
+
+      $('#tasksFormModal').modal('show');
+    }, 100);
+  } else {
+    $('#tasksFormModal').modal('hide');
+  }
+});
+
 Template.body.events({
   'click #addTaskButton'() {
-    AutoForm.resetForm('taskForm');
-
-    Session.set('taskToEdit', null);
-
-    $('#tasksFormModal').modal('show');
+    FlowRouter.go('tasks.create');
   },
-  'change .hide-completed input'(event, templateInstance) {
-    templateInstance.state.set('hideCompleted', event.target.checked);
+  'hidden.bs.modal #tasksFormModal'() {
+    FlowRouter.go('tasks.index');
   }
 });
 
 AutoForm.hooks({
   taskForm: {
     onSuccess: () => {
-      $('#tasksFormModal').modal('hide');
+      FlowRouter.go('tasks.index');
     }
   }
 });

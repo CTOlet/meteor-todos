@@ -6,11 +6,9 @@ Template.task.events({
     Meteor.call('tasks.setChecked', this._id, !this.checked);
   },
   'click .edit'() {
-    AutoForm.resetForm('taskForm');
-
     Session.set('taskToEdit', this);
 
-    $('#tasksFormModal').modal('show');
+    FlowRouter.go('tasks.update', { taskId: this._id });
   },
   'click .remove'() {
     Meteor.call('tasks.remove', this._id);
