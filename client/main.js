@@ -10,14 +10,15 @@ FlowRouter.route('/', {
 FlowRouter.route('/task/new', {
   name: 'tasks.create',
   action: () => {
-    Session.set('taskToEdit', null);
+    Session.set('taskIdToEdit', null);
     Session.set('showTasksForm', true);
   }
 });
 
 FlowRouter.route('/task/edit/:taskId', {
   name: 'tasks.update',
-  action: () => {
+  action: params => {
+    Session.set('taskIdToEdit', params.taskId);
     Session.set('showTasksForm', true);
   }
 });

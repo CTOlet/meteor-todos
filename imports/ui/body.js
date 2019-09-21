@@ -17,22 +17,22 @@ Template.body.helpers({
     return Tasks.find({ checked: { $ne: true } }).count();
   },
   afMethod() {
-    return Session.get('taskToEdit') ? 'method-update' : 'method';
+    return Session.get('taskIdToEdit') ? 'method-update' : 'method';
   },
   afMeteorMethod() {
-    return Session.get('taskToEdit') ? 'tasks.update' : 'tasks.insert';
+    return Session.get('taskIdToEdit') ? 'tasks.update' : 'tasks.insert';
   },
   afButtonContent() {
-    return Session.get('taskToEdit') ? 'Save' : 'Add';
+    return Session.get('taskIdToEdit') ? 'Save' : 'Add';
   },
   afButtonClasses() {
-    return Session.get('taskToEdit') ? 'btn btn-success' : 'btn btn-primary';
+    return Session.get('taskIdToEdit') ? 'btn btn-success' : 'btn btn-primary';
   },
   afTaskDoc() {
-    return Session.get('taskToEdit');
+    return Tasks.findOne({ _id: Session.get('taskIdToEdit') });
   },
   tasksFormTitle() {
-    const taskToEdit = Session.get('taskToEdit');
+    const taskToEdit = Tasks.findOne({ _id: Session.get('taskIdToEdit') });
     return taskToEdit ? 'Edit task: ' + taskToEdit.title : 'Add new task';
   }
 });

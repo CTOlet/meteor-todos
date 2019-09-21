@@ -6,8 +6,6 @@ Template.task.events({
     Meteor.call('tasks.setChecked', this._id, !this.checked);
   },
   'click .edit'() {
-    Session.set('taskToEdit', this);
-
     FlowRouter.go('tasks.update', { taskId: this._id });
   },
   'click .remove'() {
