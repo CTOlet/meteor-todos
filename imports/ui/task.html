@@ -3,11 +3,16 @@
     <div class="col-xs-1">
       <input type="checkbox" class="toggle-checked" checked="{{checked}}" />
     </div>
-    <div class="col-xs-10">{{title}}</div>
+    <div class="col-xs-9">{{title}}</div>
     <div class="col-xs-1">
-      <button type="button" class="close" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <a href="#" class="edit">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </a>
+    </div>
+    <div class="col-xs-1">
+      <a href="#" class="remove">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
     </div>
   </li>
 </template>

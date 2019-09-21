@@ -1,6 +1,3 @@
-import { Template } from 'meteor/templating';
-import { ReactiveDict } from 'meteor/reactive-dict';
-
 import { Tasks } from '../api/tasks';
 
 import './task.js';
@@ -25,10 +22,36 @@ Template.body.helpers({
   },
   incompleteCount() {
     return Tasks.find({ checked: { $ne: true } }).count();
+  },
+  afMethod() {
+    return Session.get('taskToEdit') ? 'method-update' : 'method';
+  },
+  afMeteorMethod() {
+    return Session.get('taskToEdit') ? 'tasks.update' : 'tasks.insert';
+  },
+  afButtonContent() {
+    return Session.get('taskToEdit') ? 'Save' : 'Add';
+  },
+  afButtonClasses() {
+    return Session.get('taskToEdit') ? 'btn btn-success' : 'btn btn-primary';
+  },
+  afTaskDoc() {
+    return Session.get('taskToEdit');
+  },
+  tasksFormTitle() {
+    const taskToEdit = Session.get('taskToEdit');
+    return taskToEdit ? 'Edit task: ' + taskToEdit.title : 'Add new task';
   }
 });
 
 Template.body.events({
+  'click #addTaskButton'() {
+    AutoForm.resetForm('taskForm');
+
+    Session.set('taskToEdit', null);
+
+    $('#tasksFormModal').modal('show');
+  },
   'change .hide-completed input'(event, templateInstance) {
     templateInstance.state.set('hideCompleted', event.target.checked);
   }

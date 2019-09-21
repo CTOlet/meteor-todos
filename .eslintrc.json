@@ -2,7 +2,9 @@
   "extends": ["plugin:meteor/recommended", "prettier"],
   "plugins": ["prettier", "meteor"],
   "rules": {
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "meteor/audit-argument-checks": "off",
+    "meteor/no-session": "off"
   },
   "parserOptions": {
     "ecmaVersion": 8

@@ -6,7 +6,7 @@
           <h1>Todo List ({{incompleteCount}})</h1>
         </div>
         <div class="col-xs-2">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#tasksFormModal">
+          <button id="addTaskButton" class="btn btn-primary">
             Add
           </button>
         </div>
@@ -19,12 +19,12 @@
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Add new task</h4>
+            <h4 class="modal-title">{{tasksFormTitle}}</h4>
           </div>
           <div class="modal-body">
-            {{> quickForm collection="Tasks" id="taskForm" type="method" fields="title,description"
-            buttonContent="Add" resetOnSuccess="true" meteormethod="tasks.insert"
-            valudation="submit" }}
+            {{> quickForm collection="Tasks" id="taskForm" doc=afTaskDoc type=afMethod
+            fields="title,description" buttonContent=afButtonContent buttonClasses=afButtonClasses
+            resetOnSuccess="true" meteormethod=afMeteorMethod validation="browser"}}
           </div>
         </div>
       </div>

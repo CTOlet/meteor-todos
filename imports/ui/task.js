@@ -1,6 +1,3 @@
-import { Meteor } from 'meteor/meteor';
-import { Template } from 'meteor/templating';
-
 import './task.html';
 
 Template.task.events({
@@ -8,7 +5,14 @@ Template.task.events({
     // Set the checked property to the opposite of its current value
     Meteor.call('tasks.setChecked', this._id, !this.checked);
   },
-  'click .close'() {
+  'click .edit'() {
+    AutoForm.resetForm('taskForm');
+
+    Session.set('taskToEdit', this);
+
+    $('#tasksFormModal').modal('show');
+  },
+  'click .remove'() {
     Meteor.call('tasks.remove', this._id);
   }
 });

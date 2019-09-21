@@ -61,9 +61,10 @@ if (Meteor.isServer) {
 
 Meteor.methods({
   'tasks.insert'(newTask) {
-    check(newTask, Object);
-
     Tasks.insert(newTask);
+  },
+  'tasks.update'({ _id, modifier }) {
+    Tasks.update(_id, modifier);
   },
   'tasks.remove'(taskId) {
     check(taskId, String);
@@ -72,7 +73,6 @@ Meteor.methods({
   },
   'tasks.setChecked'(taskId, checked) {
     check(taskId, String);
-    check(checked, Boolean);
 
     Tasks.update(taskId, { $set: { checked } });
   }
