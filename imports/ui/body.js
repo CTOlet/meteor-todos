@@ -1,12 +1,16 @@
-import { Tasks } from '../api/tasks';
+import { PUBLICATION_TASKS, Tasks, METHOD_TASKS_INSERT, METHOD_TASKS_UPDATE } from '../api/tasks';
+import { ROUTE_TASKS_CREATE, ROUTE_TASKS_INDEX } from '../../client/routes';
 
 import './task.js';
 import './body.html';
 
 window.Tasks = Tasks;
 
+export const SESSION_SHOW_TASKS_FORM = 'showTasksForm';
+export const SESSION_TASK_ID_TO_EDIT = 'taskIdToEdit';
+
 Template.body.onCreated(function bodyOnCreated() {
-  Meteor.subscribe('tasks');
+  Meteor.subscribe(PUBLICATION_TASKS);
 });
 
 Template.body.helpers({
@@ -17,28 +21,28 @@ Template.body.helpers({
     return Tasks.find({ checked: { $ne: true } }).count();
   },
   afMethod() {
-    return Session.get('taskIdToEdit') ? 'method-update' : 'method';
+    return Session.get(SESSION_TASK_ID_TO_EDIT) ? 'method-update' : 'method';
   },
   afMeteorMethod() {
-    return Session.get('taskIdToEdit') ? 'tasks.update' : 'tasks.insert';
+    return Session.get(SESSION_TASK_ID_TO_EDIT) ? METHOD_TASKS_UPDATE : METHOD_TASKS_INSERT;
   },
   afButtonContent() {
-    return Session.get('taskIdToEdit') ? 'Save' : 'Add';
+    return Session.get(SESSION_TASK_ID_TO_EDIT) ? 'Save' : 'Add';
   },
   afButtonClasses() {
-    return Session.get('taskIdToEdit') ? 'btn btn-success' : 'btn btn-primary';
+    return Session.get(SESSION_TASK_ID_TO_EDIT) ? 'btn btn-success' : 'btn btn-primary';
   },
   afTaskDoc() {
-    return Tasks.findOne({ _id: Session.get('taskIdToEdit') });
+    return Tasks.findOne({ _id: Session.get(SESSION_TASK_ID_TO_EDIT) });
   },
   tasksFormTitle() {
-    const taskToEdit = Tasks.findOne({ _id: Session.get('taskIdToEdit') });
+    const taskToEdit = Tasks.findOne({ _id: Session.get(SESSION_TASK_ID_TO_EDIT) });
     return taskToEdit ? 'Edit task: ' + taskToEdit.title : 'Add new task';
   }
 });
 
 Tracker.autorun(() => {
-  if (Session.get('showTasksForm')) {
+  if (Session.get(SESSION_SHOW_TASKS_FORM)) {
     const timerId = setInterval(() => {
       // hack: wait while document is not ready
       if (document.readyState !== 'complete') return;
@@ -56,17 +60,17 @@ Tracker.autorun(() => {
 
 Template.body.events({
   'click #addTaskButton'() {
-    FlowRouter.go('tasks.create');
+    FlowRouter.go(ROUTE_TASKS_CREATE);
   },
   'hidden.bs.modal #tasksFormModal'() {
-    FlowRouter.go('tasks.index');
+    FlowRouter.go(ROUTE_TASKS_INDEX);
   }
 });
 
 AutoForm.hooks({
   taskForm: {
     onSuccess: () => {
-      FlowRouter.go('tasks.index');
+      FlowRouter.go(ROUTE_TASKS_INDEX);
     }
   }
 });

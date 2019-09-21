@@ -1,14 +1,17 @@
+import { METHOD_TASKS_REMOVE, METHOD_TASKS_SET_CHECKED } from '../api/tasks';
+import { ROUTE_TASKS_UPDATE } from '../../client/routes';
+
 import './task.html';
 
 Template.task.events({
   'click .toggle-checked'() {
     // Set the checked property to the opposite of its current value
-    Meteor.call('tasks.setChecked', this._id, !this.checked);
+    Meteor.call(METHOD_TASKS_SET_CHECKED, this._id, !this.checked);
   },
   'click .edit'() {
-    FlowRouter.go('tasks.update', { taskId: this._id });
+    FlowRouter.go(ROUTE_TASKS_UPDATE, { taskId: this._id });
   },
   'click .remove'() {
-    Meteor.call('tasks.remove', this._id);
+    Meteor.call(METHOD_TASKS_REMOVE, this._id);
   }
 });

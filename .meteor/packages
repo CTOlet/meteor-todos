@@ -25,3 +25,5 @@ msavin:mongol
 session
 aldeed:schema-index
 kadira:flow-router
+meteortesting:mocha
+practicalmeteor:chai
