@@ -24,3 +24,4 @@ aldeed:schema-deny
 aldeed:autoform
 msavin:mongol
 session
+aldeed:schema-index

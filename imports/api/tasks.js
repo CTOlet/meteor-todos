@@ -10,6 +10,7 @@ Tasks.attachSchema(
   new SimpleSchema({
     title: {
       type: String,
+      unique: true,
       required: true,
       max: 250
     },
@@ -45,7 +46,11 @@ Tasks.attachSchema(
     updatedAt: {
       type: Date,
       autoValue: function() {
-        return new Date();
+        if (this.isUpdate) {
+          return new Date();
+        } else {
+          this.unset(); // Prevent user from supplying their own value
+        }
       },
       optional: true
     }
